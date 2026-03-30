@@ -211,9 +211,6 @@ wx.onTouchStart((e) => {
   }
 });
 
-// 显示Banner广告
-adManager.showBanner();
-
 // 启动游戏循环
 gameLoop();
 

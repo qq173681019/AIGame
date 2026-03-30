@@ -293,23 +293,28 @@
 
     // 绑定事件
     canvas.addEventListener('click', handleClick);
+
+    // 触摸事件(含长按出售)
+    let longPressTimer = null;
+    let longPressTriggered = false;
     canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
-      handleClick(e);
-    }, { passive: false });
+      longPressTriggered = false;
 
-    // 长按出售 (备战席)
-    let longPressTimer = null;
-    canvas.addEventListener('touchstart', (e) => {
+      // 检查备战席长按出售
       const touch = e.touches[0];
       const pos = ui.screenToCanvas(touch.clientX, touch.clientY);
       const benchIdx = ui.canvasToBench(pos.x, pos.y);
       if (benchIdx >= 0 && engine.player.bench[benchIdx]) {
         longPressTimer = setTimeout(() => {
+          longPressTriggered = true;
           engine.sellFromBench(benchIdx);
         }, 800);
       }
-    }, { passive: true });
+
+      handleClick(e);
+    }, { passive: false });
+
     canvas.addEventListener('touchend', () => {
       if (longPressTimer) {
         clearTimeout(longPressTimer);

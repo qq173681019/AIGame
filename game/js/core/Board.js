@@ -126,7 +126,7 @@ class Board {
     const dc = Math.sign(targetCol - unit.col);
     const newRow = unit.row + dr;
     const newCol = unit.col + dc;
-    if (newRow >= 0 && newRow < this.rows * 2 && newCol >= 0 && newCol < this.cols) {
+    if (newRow >= 0 && newRow < this.rows && newCol >= 0 && newCol < this.cols) {
       if (!this.grid[newRow] || !this.grid[newRow][newCol]) {
         return this.moveUnit(unit.row, unit.col, newRow, newCol);
       }

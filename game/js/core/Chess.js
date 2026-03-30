@@ -216,15 +216,19 @@ class Chess {
   /** 升星 */
   upgrade() {
     if (this.star >= 3) return;
+    // 计算当前星级的倍率用于反算基础属性
+    const prevMultiplier = this._starMultiplier();
+    // 反算基础值
+    const baseHp = Math.floor(this.maxHp / prevMultiplier);
+    const baseAttack = Math.floor(this.attack / prevMultiplier);
+    const baseDefense = Math.floor(this.defense / prevMultiplier);
+
     this.star++;
-    const multiplier = this._starMultiplier();
-    // 通过 base 数据重新计算
-    const baseMultiplier = this.star === 2 ? 1.0 : (this.star === 3 ? 1.8 : 1.0);
-    const prevMaxHp = Math.floor(this.maxHp / baseMultiplier);
-    this.maxHp = Math.floor(prevMaxHp * multiplier / (this.star === 2 ? 1 : 1.8));
+    const newMultiplier = this._starMultiplier();
+    this.maxHp = Math.floor(baseHp * newMultiplier);
     this.hp = this.maxHp;
-    this.attack = Math.floor(this.attack * multiplier / baseMultiplier);
-    this.defense = Math.floor(this.defense * multiplier / baseMultiplier);
+    this.attack = Math.floor(baseAttack * newMultiplier);
+    this.defense = Math.floor(baseDefense * newMultiplier);
   }
 }
 
