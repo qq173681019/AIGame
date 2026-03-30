@@ -49,14 +49,14 @@ class Battle {
     for (var i = 0; i < this.playerUnits.length; i++) {
       var unit = this.playerUnits[i];
       if (!unit.alive) continue;
-      this._processUnit(unit, this.enemyUnits);
+      this._processUnit(unit, this.enemyUnits, dt);
     }
     
     // Process each living enemy unit
     for (var j = 0; j < this.enemyUnits.length; j++) {
       var eUnit = this.enemyUnits[j];
       if (!eUnit.alive) continue;
-      this._processUnit(eUnit, this.playerUnits);
+      this._processUnit(eUnit, this.playerUnits, dt);
     }
     
     // Check win condition
@@ -75,9 +75,9 @@ class Battle {
     }
   }
   
-  _processUnit(unit, enemies) {
-    // Reduce cooldown
-    unit.attackCooldown -= 1/60; // Assuming 60fps tick
+  _processUnit(unit, enemies, dt) {
+    // Reduce cooldown using delta time for frame-rate independence
+    unit.attackCooldown -= dt;
     
     // Find target if none or target is dead
     if (!unit.target || !unit.target.alive) {
@@ -136,11 +136,12 @@ class Battle {
         target.takeDamage(ability.value);
         break;
       case 'aoe_damage':
-        // Damage nearby enemies
-        var enemies = unit.target === this.playerUnits[0] ? this.playerUnits : this.enemyUnits;
-        for (var i = 0; i < enemies.length; i++) {
-          if (enemies[i].alive && this._getDistance(target, enemies[i]) <= 2) {
-            enemies[i].takeDamage(ability.value);
+        // Damage nearby enemies: determine which side the unit belongs to
+        var isPlayer = this.playerUnits.indexOf(unit) !== -1;
+        var aoeTargets = isPlayer ? this.enemyUnits : this.playerUnits;
+        for (var i = 0; i < aoeTargets.length; i++) {
+          if (aoeTargets[i].alive && this._getDistance(target, aoeTargets[i]) <= 2) {
+            aoeTargets[i].takeDamage(ability.value);
           }
         }
         break;

@@ -15,7 +15,7 @@ class SynergySystem {
     var raceCounts = {};
     var classCounts = {};
     
-    // Use Set-like behavior to count unique heroes by race/class
+    // Count all heroes by race/class (duplicates are intentional for synergy thresholds)
     for (var i = 0; i < heroes.length; i++) {
       var hero = heroes[i];
       raceCounts[hero.race] = (raceCounts[hero.race] || 0) + 1;
