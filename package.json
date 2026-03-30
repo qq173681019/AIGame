@@ -1,0 +1,18 @@
+{
+  "name": "auto-chess-game",
+  "version": "1.0.0",
+  "description": "自走棋游戏 - Auto Chess Game for WeChat Mini Game and Web platforms",
+  "main": "game/js/main.js",
+  "scripts": {
+    "start": "npx http-server game -p 8080 -o",
+    "test": "node tests/game.test.js"
+  },
+  "keywords": [
+    "auto-chess",
+    "wechat-mini-game",
+    "html5-game",
+    "云顶之弈",
+    "金铲铲之战"
+  ],
+  "license": "MIT"
+}
